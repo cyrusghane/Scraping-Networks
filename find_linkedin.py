@@ -2,21 +2,18 @@
 """
 find_linkedin.py
 
-First pass: for each person in a CSV, run ONE web search and pull out their
-LinkedIn profile URL. No LLM needed -- just a search API + a regex.
+First pass: for each person in a CSV, run one web search and pull out their
+LinkedIn profile URL. 
 
 Columns written per person:
   - "LinkedIn"         : the linkedin.com/in/... profile URL (blank if none found)
   - "linkedin_match"   : the title of the result the URL came from, so you can
                          eyeball that it's the RIGHT person (helps catch
-                         same-name mismatches). Delete this column if you don't
-                         want it.
+                         same-name mismatches). Delete this column as desired.
 
-Built for ~200-row lists. Results are written incrementally and anyone already
+Results are written incrementally and anyone already
 in the output file is skipped -- so if it stops, errors, or hits a quota, just
 run it again and it resumes where it left off.
-
-(Google's Custom Search JSON API is closed to new sign-ups, so use Serper/SerpAPI.)
 
 SETUP:
   1. pip install requests
