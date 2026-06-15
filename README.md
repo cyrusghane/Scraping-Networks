@@ -81,11 +81,6 @@ Read `website_source` as a trust signal:
 - **`heuristic`** — strict name match (used when no Anthropic key is set).
 - **`guess+...`** — the URL came from domain-guessing, not search. Verified the same way, but worth a glance.
 
-## How it works
-
-**Finding LinkedIn** is a search-plus-regex job: one query per person (`"name" company LinkedIn`), then pull the first `linkedin.com/in/...` URL out of the results.
-
-**Finding websites** is harder, so it runs in two stages with verification at the core. Stage one gathers candidates from several targeted searches and from each person's GitHub "website" field, fetches each candidate page, and confirms identity before trusting it — the strongest signal being a page that links back to the person's known LinkedIn. Where there's no link-back, Claude reads the page and decides whether it belongs to this specific person. Stage two only runs for the people stage one left blank: it builds likely domains from the name and the LinkedIn handle (e.g. `kcorbitt.com`), fetches the ones that resolve, and runs them through the same verification at a higher confidence bar, since a guessed domain is a weaker starting point. Every kept result carries a confidence score and a source tag, so borderline matches are easy to review.
 
 ## Configuration
 
