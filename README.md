@@ -1,20 +1,6 @@
 # Scraping Networks
 
-A small Python pipeline for enriching a list of people with their **LinkedIn profiles** and **personal websites** — and, optionally, their current role and any company they've founded.
-
-It works by querying a web-search API and **verifying** what it finds, rather than scraping LinkedIn directly. The headline trick for accuracy: a candidate page that links *back* to a person's known LinkedIn profile is treated as confirmed.
-
-## What's in here
-
-| Script | Does | Reads → Writes |
-|---|---|---|
-| `find_linkedin.py` | Finds each person's LinkedIn profile URL | `people.csv` → `people_with_linkedin.csv` |
-| `find_websites.py` | Finds each person's personal website (high precision) | `people_with_linkedin.csv` → `people_with_websites.csv` |
-| `linkedin_enrich.py` | All-in-one: LinkedIn + website + current role + founded company in one pass | `people.csv` → `people_enriched.csv` |
-
-The two focused scripts (`find_linkedin` then `find_websites`) are the recommended, higher-accuracy path. `linkedin_enrich.py` does everything in a single pass with lighter verification — handy for a quick first cut.
-
-> The data files (`*.csv`) are intentionally **not** committed (see `.gitignore`). Bring your own `people.csv`.
+Pulling personal websites.
 
 ## Requirements
 
@@ -30,7 +16,6 @@ The two focused scripts (`find_linkedin` then `find_websites`) are the recommend
 | `ANTHROPIC_API_KEY` | `find_websites.py`, `linkedin_enrich.py` | Recommended | console.anthropic.com |
 | `GITHUB_TOKEN` | `find_websites.py` | Recommended | github.com/settings/tokens (no scopes needed) |
 
-`find_linkedin.py` needs only `SERPER_KEY`. The Anthropic key powers page verification and extraction — without it, `find_websites.py` falls back to a strict name-match heuristic (higher precision, lower recall). The GitHub token keeps the GitHub-profile lookup from rate-limiting.
 
 ## Setup
 
@@ -44,8 +29,7 @@ export ANTHROPIC_API_KEY="sk-ant-..."   # optional
 export GITHUB_TOKEN="..."               # optional
 ```
 
-The `export` lines and `source venv/bin/activate` are per-session — re-run them in each new terminal.
-
+The `export` lines and `source venv/bin/activate` are per-session.
 ## Input
 
 A CSV with a header row and at least a `Name` column. A `Company` column is optional but improves matching:
@@ -70,9 +54,7 @@ python3 find_linkedin.py        # people.csv -> people_with_linkedin.csv
 python3 find_websites.py        # people_with_linkedin.csv -> people_with_websites.csv
 ```
 
-Both scripts are **resumable**: they write results row-by-row and skip anyone already in the output file, so if a run stops (quota, network, Ctrl-C), just run it again and it picks up where it left off.
-
-**Tip:** test on a small slice first — copy the header plus a handful of rows into a small CSV and point `INPUT_CSV` at it before processing the full list.
+Both scripts are **resumable**.
 
 ## Output columns
 
@@ -117,18 +99,3 @@ Common knobs at the top of `find_websites.py`:
 | `MAX_GUESS_ATTEMPTS` | `14` | max domains probed per blank person in stage 2 |
 | `TRY_DOMAIN_GUESSES` | `True` | set `False` to skip stage 2 entirely |
 | `SEARCH_PROVIDER` | `"serper"` | `serper`, `serpapi`, or `google` |
-
-## Notes & limitations
-
-- **Blanks are common and usually correct** — many people simply don't have a personal website. A blank means "not found," not "failed."
-- **~100% is not achievable.** The pipeline optimizes for *precision* (few wrong attributions) plus a confidence column so the uncertain few are easy to hand-check.
-- **Same-name ambiguity** is the main risk — use `linkedin_match` and the website confidence/source columns to catch mismatches.
-- **Data can be stale** — search results lag reality, so a recent job change or fundraise may not show up yet.
-
-## Responsible use
-
-This project queries licensed search APIs and public profile data; it does **not** scrape LinkedIn or evade any site's access controls. Respect each provider's terms and rate limits, treat the enriched personal data responsibly, and note that `.gitignore` keeps your data CSVs out of the repo by design — don't commit other people's personal information to a public repo.
-
-## License
-
-No license specified. Add one (e.g. MIT) if you want others to reuse this.
