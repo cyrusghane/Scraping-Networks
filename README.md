@@ -54,7 +54,7 @@ python3 find_linkedin.py        # people.csv -> people_with_linkedin.csv
 python3 find_websites.py        # people_with_linkedin.csv -> people_with_websites.csv
 ```
 
-Both scripts are **resumable**.
+Both scripts are resumable.
 
 ## Output columns
 
