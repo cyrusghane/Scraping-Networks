@@ -79,7 +79,7 @@ Read `website_source` as a trust signal:
 - **`linkback`** — the page links to the person's known LinkedIn. Essentially certain.
 - **`llm`** — Claude judged the page to be theirs. Trust scales with confidence.
 - **`heuristic`** — strict name match (used when no Anthropic key is set).
-- **`guess+...`** — the URL came from domain-guessing, not search. Verified the same way, but worth a glance.
+- **`guess+...`** — the URL came from domain-guessing, not search.
 
 
 ## Configuration
