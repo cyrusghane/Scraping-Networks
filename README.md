@@ -14,7 +14,7 @@ Pulling personal websites.
 |---|---|---|---|
 | `SERPER_KEY` | all scripts | **Required** | serper.dev |
 | `ANTHROPIC_API_KEY` | `find_websites.py`, `linkedin_enrich.py` | Recommended | console.anthropic.com |
-| `GITHUB_TOKEN` | `find_websites.py` | Recommended | github.com/settings/tokens (no scopes needed) |
+| `GITHUB_TOKEN` | `find_websites.py` | Recommended | github.com/settings/tokens|
 
 
 ## Setup
