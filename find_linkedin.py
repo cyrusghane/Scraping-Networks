@@ -11,10 +11,6 @@ Columns written per person:
                          eyeball that it's the RIGHT person (helps catch
                          same-name mismatches). Delete this column as desired.
 
-Results are written incrementally and anyone already
-in the output file is skipped -- so if it stops, errors, or hits a quota, just
-run it again and it resumes where it left off.
-
 SETUP:
   1. pip install requests
   2. Sign up at serper.dev, paste the key below (or set it as an env var).
