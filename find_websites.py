@@ -2,31 +2,26 @@
 """
 find_websites.py
 
-Find each person's PERSONAL WEBSITE with high precision, in two stages.
+scrapes each person's personal website in two stages.
 
 STAGE 1 - SEARCH + VERIFY:
   1. Cast a wide net: several targeted searches per person, plus the "website"
      field from their GitHub profile, to gather candidate URLs.
   2. Verify each candidate by actually fetching the page:
        * LINK-BACK (strongest): if the page links to the exact LinkedIn URL we
-         already found, it's confirmed (~0.97). Nobody else links their own
-         site back to your LinkedIn.
+         already found, it's confirmed.
        * Otherwise Claude reads the page and judges it (if an Anthropic key is
          set). Without a key, falls back to a strict name-match heuristic.
 
 STAGE 2 - DOMAIN GUESS (only for people Stage 1 left blank):
   Builds likely domains from the name and the LinkedIn handle (e.g. janedoe.com,
-  jdoe.io, <linkedin-slug>.com), fetches the ones that resolve, and runs them
+  jdoe.io, etc), fetches the ones that resolve, and runs them
   through the SAME verification - but at a HIGHER confidence bar, because a
   guessed domain is a weaker prior (parked pages / squatters / same-name people).
   Hits found this way are tagged with a "guess+" source so you can spot them.
 
 Reads people_with_linkedin.csv (needs the LinkedIn column as an anchor) and
 writes people_with_websites.csv. Resumable: rerun to pick up where it stopped.
-
-HONEST EXPECTATIONS: ~100% is not achievable - many people have no personal
-site (correct answer = blank), and same-name people cause ambiguity. This aims
-for HIGH PRECISION + good recall + a confidence column for review.
 
 KEYS / SETUP:
   - SERPER_KEY        (required)                 - search
