@@ -10,9 +10,8 @@ It works by querying a web-search API and **verifying** what it finds, rather th
 |---|---|---|
 | `find_linkedin.py` | Finds each person's LinkedIn profile URL | `people.csv` → `people_with_linkedin.csv` |
 | `find_websites.py` | Finds each person's personal website (high precision) | `people_with_linkedin.csv` → `people_with_websites.csv` |
-| `linkedin_enrich.py` | All-in-one: LinkedIn + website + current role + founded company in one pass | `people.csv` → `people_enriched.csv` |
 
-The two focused scripts (`find_linkedin` then `find_websites`) are the recommended, higher-accuracy path. `linkedin_enrich.py` does everything in a single pass with lighter verification — handy for a quick first cut.
+Run the two focused scripts in order (`find_linkedin` then `find_websites`); together they are the higher-accuracy path. They enrich **LinkedIn** and **personal website** only — current affiliation and any founded company are out of scope for these two scripts.
 
 > The data files (`*.csv`) are intentionally **not** committed (see `.gitignore`). Bring your own `people.csv`.
 
