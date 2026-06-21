@@ -43,6 +43,7 @@ export GITHUB_TOKEN="..."               # optional
 ```
 
 The `export` lines and `source venv/bin/activate` are per-session.
+
 ## Input
 
 A CSV with a header row and at least a `Name` column. A `Company` column is optional but improves matching:
