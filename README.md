@@ -41,7 +41,7 @@ INPUT_CSV="people.csv" OUTPUT_CSV="people_cleaned.csv" ORG_NAME="Y Combinator" \
 #    then transcribe the names into a CSV with at least a `Name` column
 python3 extract_roster.py "screencapture-....pdf" roster_imgs/
 
-# 3. enrich — fills blanks only; resumable (re-run to continue after a stop)
+# 3. enrich; resumable (re-run to continue after a stop)
 INPUT_CSV="people_cleaned.csv" OUTPUT_CSV="people_enriched.csv" \
   CONTEXT_SUFFIX="Y Combinator" python3 enrich.py
 
@@ -50,9 +50,8 @@ CSV="people_enriched.csv" CONTEXT_SUFFIX="Y Combinator" python3 verify.py
 ```
 
 `CONTEXT_SUFFIX` is the network that pins the right person (`"Y Combinator"`,
-`"Square / Block"`, …). Input needs a `Name` column; a free-text hint column
-(role, tenure, Slack status — set via `CONTEXT_COLUMN`, default `Past Affiliation`)
-sharply improves disambiguation.
+`"Square / Block"`, …). Input needs a `Name` column; a free-text 'hint' column
+(role, tenure, Slack status — set via `CONTEXT_COLUMN`, default `Past Affiliation`) improves disambiguation.
 
 ## Output columns
 
@@ -63,14 +62,6 @@ sharply improves disambiguation.
 | `Current Affiliation` | where they are now |
 | `Company (if any) // status` | **founded** company as `url // year` (blank unless they founded one) |
 | `LinkedIn` | canonical `https://www.linkedin.com/in/<slug>/` |
-| `Personal website` | their own site (blank is common and usually correct) |
+| `Personal website` | their own site (if any) |
 | `linkedin_conf` / `website_conf` / `founded_conf` | per-cell confidence |
 | `enrich_evidence` | note on how identity was confirmed + any same-name flag |
-
-Read the confidence columns as a trust signal:
-
-- **`linkback`** — site links to the known LinkedIn. Essentially certain.
-- **`high` / `medium` / `low` / `none`** — the model's own confidence; `low`/`none` usually sit next to a deliberately-blank cell (it looked and abstained).
-- After `verify.py`: **`high (verified)`** (re-confirmed), **`corrected`** (value fixed), **`refuted->blank`** (wrong match, cleared), **`uncertain`** (couldn't confirm — eyeball it).
-
-Sort by these to triage; delete the four audit columns once you're satisfied.
